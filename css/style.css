@@ -1,0 +1,254 @@
+/* Battlecruisers — flat design. Solid fills only: no gradients, no drop shadows. */
+
+:root {
+  --bg: #eef2f5;
+  --surface: #ffffff;
+  --text: #1d2b36;
+  --muted: #5f6f7c;
+  --header-bg: #1d3a52;
+  --header-text: #ffffff;
+  --accent: #1f6fb2;
+  --accent-hover: #185a91;
+  --accent-text: #ffffff;
+  --btn: #dde5ec;
+  --btn-hover: #cdd8e2;
+  --grid: #a9c6dd;
+  --water: #cfe3f2;
+  --water-known: #e8f1f8;
+  --aim: #a6cbe8;
+  --ship: #4f5d6b;
+  --hit: #e8573f;
+  --sunk: #8b2a1d;
+  --miss: #5d87ab;
+  --ok: #3aa76d;
+  --bad: #e8573f;
+  --focus: #f2b134;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1a24;
+    --surface: #172633;
+    --text: #e4ecf2;
+    --muted: #93a6b5;
+    --header-bg: #0a131b;
+    --header-text: #e4ecf2;
+    --accent: #3d8fd6;
+    --accent-hover: #5aa3e3;
+    --accent-text: #0a131b;
+    --btn: #24394b;
+    --btn-hover: #2e4a61;
+    --grid: #0f2333;
+    --water: #1d3a52;
+    --water-known: #152b3d;
+    --aim: #2d5b80;
+    --ship: #9aaab8;
+    --hit: #ff6b4f;
+    --sunk: #c2412b;
+    --miss: #7fa9cc;
+    --ok: #4cc488;
+    --bad: #ff6b4f;
+    --focus: #f2b134;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.4;
+}
+
+h1, h2 { margin: 0; font-weight: 600; }
+
+/* ---- Header ---- */
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 16px;
+  background: var(--header-bg);
+  color: var(--header-text);
+}
+
+.topbar h1 { font-size: 1.35rem; letter-spacing: 0.02em; }
+
+.controls { display: flex; align-items: center; gap: 0.5rem; }
+
+select {
+  font: inherit;
+  padding: 0.4rem 0.5rem;
+  border: 0;
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* ---- Buttons ---- */
+
+button {
+  font: inherit;
+  padding: 0.5rem 0.9rem;
+  border: 0;
+  border-radius: 4px;
+  background: var(--btn);
+  color: var(--text);
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) { background: var(--btn-hover); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+button:focus-visible, select:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+button.primary { background: var(--accent); color: var(--accent-text); font-weight: 600; }
+button.primary:hover:not(:disabled) { background: var(--accent-hover); }
+
+/* ---- Layout ---- */
+
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem 16px 2rem;
+}
+
+.status {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  background: var(--surface);
+  font-size: 1.05rem;
+  min-height: 3rem;
+}
+
+.panel {
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  border-radius: 4px;
+  background: var(--surface);
+}
+
+.boards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem 2.5rem;
+}
+
+.board-wrap { flex: 1 1 300px; max-width: 440px; }
+
+.board-wrap h2 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 3px solid transparent;
+}
+
+.board-wrap.active h2 { border-bottom-color: var(--accent); }
+
+/* ---- Setup ---- */
+
+.roster { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
+
+.ship-btn { display: flex; align-items: center; gap: 0.5rem; }
+.ship-btn.selected { background: var(--accent); color: var(--accent-text); }
+.ship-btn.placed { opacity: 0.6; }
+.ship-btn.placed::after { content: "\2713"; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+/* ---- Result ---- */
+
+.result { border-left: 6px solid var(--accent); }
+.result.win { border-left-color: var(--ok); }
+.result.loss { border-left-color: var(--bad); }
+.result h2 { font-size: 1.3rem; margin-bottom: 0.25rem; }
+.result p { margin: 0 0 0.75rem; }
+
+/* ---- Boards ---- */
+
+.board {
+  display: grid;
+  grid-template-columns: 1.5rem repeat(10, 1fr);
+  gap: 2px;
+  user-select: none;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.cell {
+  position: relative;
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0;
+  border-radius: 2px;
+  background: var(--water);
+  cursor: default;
+}
+
+.cell:hover:not(:disabled) { background: var(--water); }
+.cell:disabled { opacity: 1; cursor: default; }
+
+.cell.known { background: var(--water-known); }
+
+.cell.miss::after {
+  content: "";
+  position: absolute;
+  inset: 37%;
+  border-radius: 50%;
+  background: var(--miss);
+}
+
+.cell.ship, .cell.ship:hover:not(:disabled) { background: var(--ship); }
+.cell.hit, .cell.hit:hover:not(:disabled) { background: var(--hit); }
+.cell.sunk, .cell.sunk:hover:not(:disabled) { background: var(--sunk); }
+
+/* Rounded bow and stern so each ship reads as one hull. */
+.cell.h.bow { border-radius: 45% 2px 2px 45%; }
+.cell.h.stern { border-radius: 2px 45% 45% 2px; }
+.cell.v.bow { border-radius: 45% 45% 2px 2px; }
+.cell.v.stern { border-radius: 2px 2px 45% 45%; }
+
+.cell.preview-ok, .cell.preview-ok:hover:not(:disabled) { background: var(--ok); }
+.cell.preview-bad, .cell.preview-bad:hover:not(:disabled) { background: var(--bad); opacity: 0.6; }
+
+.board.placing .cell { cursor: pointer; }
+
+.board.targeting .cell.open { cursor: crosshair; }
+.board.targeting .cell.open:hover { background: var(--aim); }
+
+.cell.last { outline: 3px solid var(--focus); outline-offset: -3px; }
+.cell:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
+
+/* ---- Fleet trackers ---- */
+
+.fleet {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  font-size: 0.85rem;
+}
+
+.fleet li { display: flex; align-items: center; gap: 0.4rem; }
+.fleet li.sunk { opacity: 0.5; text-decoration: line-through; }
+
+.pips { display: inline-flex; gap: 2px; }
+.pip { width: 9px; height: 9px; border-radius: 1px; background: var(--ship); }
+.pip.hit { background: var(--hit); }
+.sunk .pip, .ship-btn .pip { background: currentColor; }

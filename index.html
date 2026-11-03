@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Battlecruisers</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Battlecruisers</h1>
+    <div class="controls">
+      <label for="level">Difficulty</label>
+      <select id="level">
+        <option value="easy">Easy</option>
+        <option value="normal">Normal</option>
+        <option value="hard">Hard</option>
+      </select>
+      <button type="button" id="new-game">New game</button>
+    </div>
+  </header>
+
+  <main>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+
+    <section id="setup" class="panel">
+      <div id="roster" class="roster"></div>
+      <div class="actions">
+        <button type="button" id="rotate">Rotate (R)</button>
+        <button type="button" id="random">Random</button>
+        <button type="button" id="clear">Clear</button>
+        <button type="button" id="start" class="primary" disabled>Start battle</button>
+      </div>
+    </section>
+
+    <section id="result" class="panel result" hidden>
+      <h2 id="result-title"></h2>
+      <p id="result-text"></p>
+      <button type="button" id="play-again" class="primary">Play again</button>
+    </section>
+
+    <div class="boards">
+      <section class="board-wrap" id="player-wrap">
+        <h2>Your fleet</h2>
+        <div id="player-board" class="board"></div>
+        <ul id="player-fleet" class="fleet"></ul>
+      </section>
+      <section class="board-wrap" id="enemy-wrap">
+        <h2>Enemy waters</h2>
+        <div id="enemy-board" class="board"></div>
+        <ul id="enemy-fleet" class="fleet"></ul>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/rules.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
